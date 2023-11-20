@@ -1,6 +1,6 @@
 const getArtist = async () => {
     try {
-        return (await fetch("https://node-server4.onrender.com/api/artists")).json();
+        return (await fetch("https://edit-delete.onrender.com/api/artists")).json();
     } catch(error) {
         console.log("error");
     }
@@ -8,89 +8,81 @@ const getArtist = async () => {
 
 
 
-const showPlayer = async () => {
-    let players = await getPlayer();
-    let playersDiv = document.getElementById("player-list");
-    playersDiv.innerHTML = "";
-    players.forEach((player) => {
+const showArtist = async () => {
+    let artists = await getArtist();
+    let artistsDiv = document.getElementById("artist-list");
+    artistsDiv.innerHTML = "";
+    artists.forEach((artist) => {
         const section = document.createElement("section");
-        playersDiv.append(section);
+        artistsDiv.append(section);
 
         const  a = document.createElement("a");
         a.href = "#";
         section.append(a);
 
         const h3 = document.createElement("h3");
-        h3.innerHTML = player.name;
+        h3.innerHTML = artist.name;
         a.append(h3);
 
-        if(player.img) {
+        if(artist.img) {
         const img = document.createElement("img");
         section.append(img);
-        img.src = "https://node-server4.onrender.com/" + player.img;
+        img.src = "https://edit-delete.onrender.com/" + artist.img;
         } 
 
         a.onclick = (e) => {
             e.preventDefault();
-            displayDetails(player);
+            displayDetails(artist);
         }
     });
 };
 
-const displayDetails = (player) => 
+const displayDetails = (artist) => 
 {
-    const playerDetails = document.getElementById("player-details");
-    playerDetails.innerHTML = "";
+    const artistDetails = document.getElementById("artist-details");
+    artistDetails.innerHTML = "";
 
     const dLink = document.createElement("a");
     dLink.innerHTML = " &#x2715;";
-    playerDetails.append(dLink);
+    artistDetails.append(dLink);
     dLink.id = "delete-link";
 
     const eLink = document.createElement("a");
     eLink.innerHTML = "&#9998;";
-    playerDetails.append(eLink);
+    artistDetails.append(eLink);
     eLink.id = "edit-link";
 
     const h3 = document.createElement("h3");
-    h3.innerHTML = player.name;
-    playerDetails.append(h3);
+    h3.innerHTML = artist.name;
+    artistDetails.append(h3);
 
     const h4 = document.createElement("h4");
-    h4.innerHTML = player.position;
-    playerDetails.append(h4);
+    h4.innerHTML = artist.rname;
+    artistDetails.append(h4);
 
     const p = document.createElement("p");
-    p.innerHTML = player.team;
-    playerDetails.append(p);
+    p.innerHTML = artist.origin;
+    artistDetails.append(p);
 
     const p1 = document.createElement("p");
-    p1.innerHTML = player.nickname;
-    playerDetails.append(p1);
+    p1.innerHTML = artist.genre;
+    artistDetails.append(p1);
 
-    const ul = document.createElement("ul");
-    playerDetails.append(ul);
-    console.log(player.skills);
-    player.skills.forEach((skill) => {
-        const li = document.createElement("li");
-        ul.append(li);
-        li.innerHTML = skill;
-    });
-
+    
     eLink.onclick = (e) => {
         e.preventDefault();
         document.querySelector(".dialog").classList.remove("transparent");
-        document.getElementById("second-title").innerHTML = "Edit Player";
+        document.getElementById("second-title").innerHTML = "Edit Artist";
     };
     dLink.onclick = (e) => {
         e.preventDefault();
-        deletePlayer(player);
+        deleteArtist(artist);
     };
-    populateEditForm(player);
+    populateEditForm(artist);
 };
 
-const deletePlayer = async (player) => {
-    let response = await fetch(`https://node-server4.onrender.com/api/players/${player.id}`, {
+const deleteArtist = async (artist) => {
+    let response = await fetch(`https://edit-delete.onrender.com/api/artists/${artist.id}`, {
         method: "DELETE",
         headers: {
             "Content-Type": "application/json;charset=utf-8",
@@ -104,54 +96,33 @@ const deletePlayer = async (player) => {
     }
 
     let result = await response.json();
-    showPlayer();
-    document.getElementById("player-details").innerHTML = "";
+    showArtist();
+    document.getElementById("artist-details").innerHTML = "";
     resetForm();
 };
 
-const populateEditForm = (player) => {
-    const form = document.getElementById("add-player");
-    form._id.value = player.id;
-    form.name.value = player.name;
-    form.position.value = player.position
-    form.team.value = player.team;
-    form.nickname.value = player.nickname;
-
-    //add skills
-    populateSkills(player.skills);
+const populateEditForm = (artist) => {
+    const form = document.getElementById("add-artist");
+    form._id.value = artist.id;
+    form.name.value = artist.name;
+    form.rname.value = artist.rname
+    form.origin.value = origin.origin;
+    form.genre.value = origin.genre;
 };
 
-const populateSkills = (skills) => {
-    const section = document.getElementById("skill-boxes");
-    skills.forEach((skill)=>{
-        const input = document.createElement("input");
-        input.type = "text";
-        input.value = skill;
-        section.append(input);
-    });
-};
-
-const addPlayer = async (e) => 
+const addArtist = async (e) => 
 {
-    e.preventDefault();
-    const form = document.getElementById("add-player");
-    const formData = new FormData(form);
-    formData.append("skills", getSkills());
-    let response;
-
-    //new player
     if(form._id.value == -1) {
         formData.delete("_id");
-        // console.log(...formData);
     
-        response = await fetch("https://node-server4.onrender.com/api/players", {
+        response = await fetch("https://edit-delete.onrender.com/api/artits", {
             method: "POST",
             body: formData,
         });
     }
 
-        else { //existing player
-            response = await fetch(`https://node-server4.onrender.com/api/players/${form._id.value}`,{
+        else { 
+            response = await fetch(`https://edit-delete.onrender.com/api/artists/${form._id.value}`,{
                 method: "PUT",
                 body: formData,
             });
@@ -160,44 +131,21 @@ const addPlayer = async (e) =>
         console.log("Error contacting server");
         return;
     }
-    player = await response.json();
+    artist = await response.json();
 
-    //in edit mode
+    //edit mode
     if(form._id.value != -1)
     {
-        //get the player with the indicated id
-        //then display
-        displayDetails(player);
+        displayDetails(artist);
     }
 
     document.querySelector(".dialog").classList.add("transparent");
     resetForm();
-    showPlayer();
+    showArtist();
 };
-
-const addSkill = (e) => 
-{
-    e.preventDefault();
-    const section = document.getElementById("skill-boxes");
-    const input = document.createElement("input");
-    input.type = "text";
-    section.append(input);
-};
-
-const getSkills = () => {
-    const inputs = document.querySelectorAll("#skill-boxes input");
-    const skills = [];
-
-    inputs.forEach((input)=>
-    {
-        skills.push(input.value);
-    });
-
-    return skills;
-}
 
 const resetForm = () => {
-    const form = document.getElementById("add-player");
+    const form = document.getElementById("add-artist");
     form.reset();
     form._id = "-1";
     document.getElementById("skill-boxes").innerHTML = "";
@@ -206,18 +154,16 @@ const resetForm = () => {
 const showHideAdd = (e) => {
     e.preventDefault();
     document.querySelector(".dialog").classList.remove("transparent");
-    document.getElementById("second-title").innerHTML = "Add your Favorite Player";
+    document.getElementById("second-title").innerHTML = "Add your Favorite Artist";
     resetForm();
 };
 
 
 window.onload = () => 
 {
-    showPlayer();
-    document.getElementById("add-player").onsubmit = addPlayer;
+    showArtist();
+    document.getElementById("add-artist").onsubmit = addArtist;
     document.getElementById("add-link").onclick = showHideAdd;
-
-    document.getElementById("add-skill").onclick = addSkill;
 
     document.querySelector(".close").onclick = () => {
         document.querySelector(".dialog").classList.add("transparent");

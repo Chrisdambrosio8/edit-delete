@@ -13,7 +13,7 @@ section
     text-align: center;
 }
 
-.players
+.artists
 {
     display: flex;
 }
@@ -21,27 +21,19 @@ section
 {
     width: 50%;
     padding: 10px;
-    background-color: darkgray;
+    background-color: gray;
 }
-#add-player-container
+#add-artist-container
 {
     width: 50%;
     padding: 10px;
-    background-color: darkgray;
+    background-color: gray;
 }
 .hidden
 {
     display: none;
 }
-#player-details
-{
-    /* width: 95%;
-    display: block;
-    border: 3px black solid;
-    margin: 15px;
-    text-align: center; */
 
-}
 #add-box
 {
     width: 100%;
@@ -79,17 +71,15 @@ section a
 /* Images */
 img
 {
-    width: 35%;
+    width: 30%;
     height: 50%; 
-    /* fit to border/section */
 }
 
 
 @media only screen and (min-width: 600px) {
-    #player-list
+    #artist-list
     {
         display: flex;
         flex-wrap: wrap;
-        /* justify-content: center; */
     }
 }
