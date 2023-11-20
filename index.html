@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="styles.css">
+        <script src="script.js"></script>
+    </head>
+    <body>
+        <header>
+            <h1 id="main-title">Music Artists</h1>
+            <a href="#" id="add-link">Add Artist Here</a>
+        </header>
+        <div class="artists">
+            <div class="col1of2">
+                <div id="artist-list"></div>
+                <div id="artist-details"></div>
+            </div>
+            
+            <div id="add-artist-container" class= "dialog transparent">
+                <span class="close">&times;</span>
+                <h1 id="second-title">Artists</h1>
+                <form id="add-artist" method="POST">
+                        <input type="hidden" name="_id" value="-1" />
+                        <p>
+                            <label for="name">Artist Name:</label>
+                            <input type="text" id="name" name="name" required />
+                        </p>
+
+                        <p>
+                            <label for="rname">Real Name:</label>
+                            <input type="text" id="rname" name="rname" required />
+                        </p>
+
+                        <p>
+                            <label for="origin">Origin:</label>
+                            <input type="text" id="origin" name="origin" required />
+                        </p>
+
+                        <p>
+                            <label for="genre">Genre:</label>
+                            <input type="text" id="genre" name="genre" required />
+                        </p>
+
+                        <p>
+                            <label for="img">Add Image:</label>
+                            <input type="file" id="img" name="img" />
+                        </p>
+
+                        <p>
+                            <button type="submit">Submit</button>
+                        </p>
+                </form>  
+            </div>
+        </div>
+    </body>
+</html>
